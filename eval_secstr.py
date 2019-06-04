@@ -216,9 +216,11 @@ def main():
     num_epochs = args.num_epochs
 
     ## load the data
+    print("Loading data...")
     alphabet = Uniprot21()
     secstr = SecStr8
 
+    print("Loading secstr...")
     names_train, x_train, y_train = load_secstr(secstr_train_path, alphabet, secstr)
     names_test, x_test, y_test = load_secstr(secstr_test_path, alphabet, secstr)
 
@@ -243,6 +245,7 @@ def main():
         x_train,n = kmer_features(x_train, len(alphabet), 5)
         x_test,_ = kmer_features(x_test, len(alphabet), 5)
     else:
+        print("Loading features...")
         features = torch.load(args.features)
         features.eval()
 
@@ -252,6 +255,7 @@ def main():
         features = TorchModel(features, use_cuda, full_features=args.all_hidden)
         batch_size = 32 # batch size for featurizing sequences
 
+        print("Processing features...")
         with torch.no_grad():
             z_train = []
             for i in range(0,len(x_train),batch_size):
@@ -346,6 +350,7 @@ def main():
         x_test = x_test.cuda()
         y_test = y_test.cuda()
 
+    print("Calculating test loss...")
     mb = 256
     with torch.no_grad():
         for i in range(0, len(x_test), mb):

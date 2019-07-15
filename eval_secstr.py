@@ -13,8 +13,8 @@ from src.utils import pack_sequences, unpack_sequences
 import src.pdb as pdb
 
 
-secstr_train_path = 'data/secstr/ss_cullpdb_pc40_res3.0_R1.0_d180412_filtered.train.fa'
-secstr_test_path = 'data/secstr/ss_cullpdb_pc40_res3.0_R1.0_d180412_filtered.test.fa'
+secstr_train_path = 'data/secstr/input_seqs.fa'
+secstr_test_path = 'data/secstr/input_seqs.fa'
 
 
 def encode_sequence(x, alphabet):
@@ -253,7 +253,7 @@ def main():
             features.cuda()
 
         features = TorchModel(features, use_cuda, full_features=args.all_hidden)
-        batch_size = 32 # batch size for featurizing sequences
+        batch_size = 1 # batch size for featurizing sequences
 
         print("Processing features...")
         with torch.no_grad():
@@ -262,6 +262,8 @@ def main():
                 for z in features(x_train[i:i+batch_size]):
                     z_train.append(z.cpu().numpy())
             x_train = z_train
+            
+            np.save("data/x_train.npy", x_train)
 
             z_test = []
             for i in range(0,len(x_test),batch_size):

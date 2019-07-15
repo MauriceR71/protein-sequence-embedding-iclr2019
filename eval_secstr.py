@@ -13,8 +13,8 @@ from src.utils import pack_sequences, unpack_sequences
 import src.pdb as pdb
 
 
-secstr_train_path = 'data/secstr/input_seqs.fa'
-secstr_test_path = 'data/secstr/input_seqs.fa'
+secstr_train_path = 'data/secstr/visualize.fa'
+secstr_test_path = 'data/secstr/visualize.fa'
 
 
 def encode_sequence(x, alphabet):
